@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact for Dawen.</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="css/style.css">
+
+  <center>
+  <form class="gform pure-form pure-form-stacked" method="POST" data-email="gacerdarwin265@gmail.com"
+  action="https://script.google.com/macros/s/AKfycbz5Pm50cV8yRwEzDYD_XBoGgO_5S-Rd7ebmy-A148N-NhtsElh5jZ9U44_Wl4zrnBrg3w/exec">
+    <div class="form-elements">
+   <section>
+    
+  <div class="container">
+      <div class="form-group">
+         <h4 style="font-size: 23px; color: white; margin-bottom: 15px;"></h4>   
+      <img src="dd2.png" width="260" height="150" style="border-radius: 15px;   margin-bottom: 20px;">
+<br>
+      <h3 style="font-size: 20px; color: orange; margin-bottom: 20px;">Contact Dawen?</h3>
+      </div>
+
+  
+      <div class="form-group">
+        <input type="gmail" name="gmail" placeholder="Gmail Address" required="" style=" font-family: 'Sora'; font-size: 14px; color: rgb(90, 90, 134);">
+        <textarea  name="message" rows="12" cols="20" required="" placeholder="Type here your messages for Dawen." style=" font-family: 'Sora'; font-size: 14px; color: rgb(90, 90, 134);"></textarea>
+       
+      </div>
+      <br>
+      <button type="submit" style="color: rgb(58, 85, 145);">Send</button>   
+  </div>
+ 
+</div>
+
+</div>
+
+    <div class="thankyou_message" style="display:none; background-image: url(dd2.png);border:6px aliceblue;border-radius: 40px;width: 300px;padding-top: 15px;padding-bottom: 40px;padding-left: 20px;padding-right: 20px;margin-top: 200px;"><br><br>
+      <h1 style="color: rgb(142, 141, 221); font-size: 22px;">Succesfully Sent!</h1><br><br><h1>Your information succesfully sent to. </h1> <br></a><br><h1>Darwin Gacer (Dawen?)</h1><div><br><br><br> <a href="#dito yung new wensiteds" class="btn" style="text-align: center; margin-right: 20px; color: white;">Okay!</a></div>
+    </div>
+  </form>
+  <script data-cfasync="false" type="text/javascript">
+    
+   (function() {
+  function validEmail(email) {
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(email);
+  }
+
+  function validateHuman(honeypot) {
+    if (honeypot) {
+      console.log("Robot Detected!");
+      return true;
+    } else {
+      console.log("Welcome Human!");
+    }
+  }
+  function getFormData(form) {
+    var elements = form.elements;
+
+    var fields = Object.keys(elements).filter(function(k) {
+          return (elements[k].name !== "honeypot");
+    }).map(function(k) {
+      if(elements[k].name !== undefined) {
+        return elements[k].name;
+      }else if(elements[k].length > 0){
+        return elements[k].item(0).name;
+      }
+    }).filter(function(item, pos, self) {
+      return self.indexOf(item) == pos && item;
+    });
+
+    var formData = {};
+    fields.forEach(function(name){
+      var element = elements[name];
+      formData[name] = element.value;
+      if (element.length) {
+        var data = [];
+        for (var i = 0; i < element.length; i++) {
+          var item = element.item(i);
+          if (item.checked || item.selected) {
+            data.push(item.value);
+          }
+        }
+        formData[name] = data.join(', ');
+      }
+    });
+
+    // add form-specific values into the data
+    formData.formDataNameOrder = JSON.stringify(fields);
+    formData.formGoogleSheetName = form.dataset.sheet || "Sheet1"; // default sheet name
+    formData.formGoogleSendEmail = form.dataset.email || ""; // no email by default
+
+    console.log(formData);
+    return formData;
+  }
+
+  function handleFormSubmit(event) {  
+    event.preventDefault();           
+    var form = event.target;
+    var data = getFormData(form);         
+    if( data.email && !validEmail(data.email) ) {   
+      var invalidEmail = form.querySelector(".email-invalid");
+      if (invalidEmail) {
+        invalidEmail.style.display = "block";
+        return false;
+      }
+    } else {
+      disableAllButtons(form);
+      var url = form.action;
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function() {
+          console.log(xhr.status, xhr.statusText);
+          console.log(xhr.responseText);
+          var formElements = form.querySelector(".form-elements")
+          if (formElements) {
+            formElements.style.display = "none"; // hide form
+          }
+          var thankYouMessage = form.querySelector(".thankyou_message");
+          if (thankYouMessage) {
+            thankYouMessage.style.display = "block";
+          }
+          return;
+      };
+      var encoded = Object.keys(data).map(function(k) {
+          return encodeURIComponent(k) + "=" + encodeURIComponent(data[k]);
+      }).join('&');
+      xhr.send(encoded);
+    }
+  }
+  
+  function loaded() {
+    console.log("Contact form submission handler loaded successfully.");
+    var forms = document.querySelectorAll("form.gform");
+    for (var i = 0; i < forms.length; i++) {
+      forms[i].addEventListener("submit", handleFormSubmit, false);
+    }
+  };
+  document.addEventListener("DOMContentLoaded", loaded, false);
+
+  function disableAllButtons(form) {
+    var buttons = form.querySelectorAll("button");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].disabled = true;
+    }
+  }
+})();
+
+</script>
+
+  
+</center>
+</body>
+</html>
